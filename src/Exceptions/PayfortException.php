@@ -9,7 +9,7 @@ class PayfortException extends Exception
     public function render($request)
     {
         $msg = $this->getMessage();
-        return view('payfort::error')->with(compact('msg'));
+        return view(config('payfort.path')??'payfort::error')->with(compact('msg'));
     }
 }
 

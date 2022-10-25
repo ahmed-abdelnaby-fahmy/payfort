@@ -10,26 +10,31 @@ use Payfort\Validation\Validator;
 abstract class Config
 {
 
-    public $access_code;
-
     public $merchant_identifier;
 
-    public $language;
+    public $access_code;
 
-    public $currency;
+    public $apple_access_code;
 
     public $sha_request_phrase;
 
     public $sha_response_phrase;
 
-    public $encryption;
+    public $apple_sha_request_phrase;
+
+    public $apple_sha_response_phrase;
+
+    public $language;
+
+    public $currency;
+
+    public $sha_type;
 
     public $return_url;
 
     public $return_url_tokenization;
 
     public $is_sandbox;
-
 
     protected $config = [];
 
@@ -51,6 +56,7 @@ abstract class Config
         return $this->config;
     }
 
+
     /**
      * get payfort route
      *
@@ -62,7 +68,7 @@ abstract class Config
     }
 
     /**
-     * configure the Payfort payment_method
+     * configure the Payfort
      *
      * @param array $config
      *
@@ -75,10 +81,13 @@ abstract class Config
         $this->config = array_merge($this->config, $config);
         $this->validateConfig($this->config);
         $this->access_code = $this->config['access_code'];
+        $this->apple_access_code = $this->config['apple_access_code'];
         $this->merchant_identifier = $this->config['merchant_identifier'];
         $this->sha_request_phrase = $this->config['sha_request_phrase'];
         $this->sha_response_phrase = $this->config['sha_response_phrase'];
-        $this->encryption = $this->config['encryption'];
+        $this->apple_sha_request_phrase = $this->config['apple_sha_request_phrase'];
+        $this->apple_sha_response_phrase = $this->config['apple_sha_request_phrase'];
+        $this->sha_type = $this->config['sha_type'];
         $this->language = $this->config['language'];
         $this->currency = strtoupper($this->config['currency']);
         $this->is_sandbox = $this->config['is_sandbox'];
@@ -98,8 +107,8 @@ abstract class Config
 
     }
 
-
-    public function getCurrencyDecimalPoints($currency)
+    //Currency Decimal Points
+    public function getCDP($currency)
     {
         $decimalPoint = 2;
         $arrCurrencies = array(
@@ -126,7 +135,7 @@ abstract class Config
      */
     public function convertAmountFormat(string $amount): string
     {
-        $decimalPoints = $this->getCurrencyDecimalPoints('SAR');
+        $decimalPoints = $this->getCDP('SAR');
         return round($amount, $decimalPoints) * (pow(10, $decimalPoints));
     }
 
@@ -139,13 +148,11 @@ abstract class Config
      */
     public function revertAmountFormat(string $amount): string
     {
-        $decimalPoints = $this->getCurrencyDecimalPoints('SAR');
+        $decimalPoints = $this->getCDP('SAR');
         return round($amount, $decimalPoints) / (pow(10, $decimalPoints));
     }
 
     /**
-     * verify the response
-     *
      * @param array $params
      *
      * @throws PayfortException
@@ -176,21 +183,35 @@ abstract class Config
      *
      * @return string
      */
-    public function signature(array $input, string $type = 'request'): string
+    public function signature(array $input, string $type = 'request', $is_apple = false): string
     {
         $string = '';
         ksort($input);
         foreach ($input as $k => $v) {
+            if(is_array($v)){
+                $shaSubString = '{';
+                foreach ($v as $subk => $suvv) {
+                    $shaSubString .= "$subk=$suvv, ";
+                }
+                $shaSubString = substr($shaSubString, 0, -2).'}';
+                $string .= "$k=$shaSubString";
+            }else
             $string .= "$k=$v";
         }
 
         if ($type == 'request') {
-            $string = $this->sha_request_phrase . $string . $this->sha_request_phrase;
+            if ($is_apple)
+                $string = $this->apple_sha_request_phrase . $string . $this->apple_sha_request_phrase;
+            else
+                $string = $this->sha_request_phrase . $string . $this->sha_request_phrase;
         } else {
-            $string = $this->sha_response_phrase . $string . $this->sha_response_phrase;
+            if ($is_apple)
+                $string = $this->apple_sha_response_phrase . $string . $this->apple_sha_response_phrase;
+            else
+                $string = $this->sha_response_phrase . $string . $this->sha_response_phrase;
         }
 
-        return hash($this->encryption, $string);
+        return hash($this->sha_type, $string);
     }
 
     protected function except($array, $keys)
@@ -206,7 +227,7 @@ abstract class Config
     {
         $new = new Validator([
             'access_code', 'merchant_identifier',
-            'encryption', 'sha_request_phrase',
+            'sha_type', 'sha_request_phrase',
             'sha_response_phrase', 'language',
             'currency', 'is_sandbox',
             'return_url', 'return_url_tokenization'], $config);

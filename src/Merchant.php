@@ -54,6 +54,25 @@ class Merchant extends Config
         return $this->request($validator->data);
     }
 
+    public function applePay(array $params)
+    {
+        $params = array_merge([
+            'digital_wallet' => 'APPLE_PAY',
+            'command' => 'PURCHASE',
+            'access_code' => $this->apple_access_code,
+            'merchant_identifier' => $this->merchant_identifier,
+            'currency' => $this->currency,
+            'language' => $this->language,
+        ], $params);
+        if (!empty($params['amount']))
+            $params['amount'] = $this->convertAmountFormat($params['amount']);
+        $signature = $this->signature($params,'request',true);
+        $params['signature'] = $signature;
+        $validator = new Services();
+        $validator = $validator->validator($params, 'apple_pay');
+        return $this->request($validator->data);
+    }
+
     public function tokenization(array $params)
     {
         $params = array_merge([

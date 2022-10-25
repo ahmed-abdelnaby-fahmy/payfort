@@ -22,6 +22,7 @@ class Services extends Config
             'MEEZA', // (for Purchase operations and ECOMMERCE eci only)
         ];
         $this->rules['eci'] = ['ECOMMERCE', 'MOTO', 'RECURRING',];
+        $this->rules['digital_wallets'] = ['APPLE_PAY'];
         $this->rules['commands'] = ['authorization' => 'AUTHORIZATION', 'purchase' => 'PURCHASE',];
         $this->rules['service_commands'] = [
             'TOKENIZATION', 'SDK_TOKEN', 'GET_BATCH_RESULTS', 'VERIFY_CARD',
@@ -35,8 +36,8 @@ class Services extends Config
         $this->services['tokenization'] = [
             "service_command" => ['required' => 1, 'in_array' => $this->rules['service_commands']],
             "access_code" => ['required' => 1, 'maxlength' => 60],
-            "merchant_identifier" => ['required' => 1, 'maxlength' => 60],
-            "merchant_reference" => ['required' => 1, 'maxlength' => 60],
+            "merchant_identifier" => ['required' => 1, 'maxlength' => 20],
+            "merchant_reference" => ['required' => 1, 'maxlength' => 40],
             "amount" => ['required' => 0],
             "currency" => ['required' => 1, 'maxlength' => 3],
             "language" => ['required' => 1, 'maxlength' => 2],
@@ -49,11 +50,31 @@ class Services extends Config
             "remember_me" => ['required' => 0, 'in_array' => ['YES', 'NO']],
             "return_url"
         ];
+        $this->services['apple_pay'] = [
+            "command" => ['required' => 1, 'in_array' => $this->rules['commands']],
+            "digital_wallet" => ['required' => 1, 'in_array' => $this->rules['digital_wallets']],
+            "access_code" => ['required' => 1, 'maxlength' => 60],
+            "merchant_identifier" => ['required' => 1, 'maxlength' => 20],
+            "merchant_reference" => ['required' => 1, 'maxlength' => 40],
+            "amount" => ['required' => 1],
+            "customer_email",
+            "apple_data" => ['required' => 1, 'maxlength' => 500],
+            "apple_signature" => ['required' => 1, 'maxlength' => 3000],
+            "apple_header" ,
+            "apple_paymentMethod",
+            'eci' => ['required' => 0, 'in_array' => $this->rules['eci']],
+            "order_description" => ['required' => 0, 'maxlength' => 150],
+            "customer_name" => ['required' => 0, 'maxlength' => 40],
+            "phone_number" => ['required' => 0, 'maxlength' => 19],
+            "currency" => ['required' => 1, 'maxlength' => 3],
+            "language" => ['required' => 1, 'maxlength' => 2],
+            "signature" => ['required' => 1, 'maxlength' => 600]
+        ];
         $this->services['authorization'] = [
             "command" => ['required' => 1, 'in_array' => $this->rules['commands']],
             "access_code" => ['required' => 1, 'maxlength' => 60],
-            "merchant_identifier" => ['required' => 1, 'maxlength' => 60],
-            "merchant_reference" => ['required' => 1, 'maxlength' => 60],
+            "merchant_identifier" => ['required' => 1, 'maxlength' => 20],
+            "merchant_reference" => ['required' => 1, 'maxlength' => 40],
             "amount" => ['required' => 1],
             "currency" => ['required' => 1, 'maxlength' => 3],
             "language" => ['required' => 1, 'maxlength' => 2],
@@ -80,8 +101,8 @@ class Services extends Config
         $this->services['check_status'] = [
             "query_command" => ['required' => 1, 'in_array' => $this->rules['query_commands']],
             "access_code" => ['required' => 1, 'maxlength' => 60],
-            "merchant_identifier" => ['required' => 1, 'maxlength' => 60],
-            "merchant_reference" => ['required' => 0, 'maxlength' => 60],
+            "merchant_identifier" => ['required' => 1, 'maxlength' => 20],
+            "merchant_reference" => ['required' => 1, 'maxlength' => 40],
             "language" => ['required' => 1, 'maxlength' => 2],
             "signature" => ['required' => 1, 'maxlength' => 600],
             'fort_id' => ['required' => 1, 'maxlength' => 60],
@@ -90,7 +111,7 @@ class Services extends Config
         $this->services['payment'] = [
             "command" => ['required' => 1, 'in_array' => $this->rules['commands']],
             "access_code" => ['required' => 1, 'maxlength' => 60],
-            "merchant_identifier" => ['required' => 1, 'maxlength' => 60],
+            "merchant_identifier" => ['required' => 1, 'maxlength' => 20],
             "signature" => ['required' => 1, 'maxlength' => 600],
             'amount',
             "currency" => ['required' => 1, 'maxlength' => 3],
