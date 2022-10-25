@@ -188,15 +188,18 @@ abstract class Config
         $string = '';
         ksort($input);
         foreach ($input as $k => $v) {
-            if(is_array($v)){
-                $shaSubString = '{';
-                foreach ($v as $subk => $suvv) {
-                    $shaSubString .= "$subk=$suvv, ";
+            if (is_array($v)) {
+                $sub_string = '{';
+                foreach ($v as $sub_k => $sub_v) {
+                    if (!next($v))
+                        $sub_string .= "$sub_k=$sub_v";
+                    else
+                        $sub_string .= "$sub_k=$sub_v, ";
                 }
-                $shaSubString = substr($shaSubString, 0, -2).'}';
-                $string .= "$k=$shaSubString";
-            }else
-            $string .= "$k=$v";
+                $sub_string .= '}';
+                $string .= "$k=$sub_string";
+            } else
+                $string .= "$k=$v";
         }
 
         if ($type == 'request') {
@@ -213,6 +216,7 @@ abstract class Config
 
         return hash($this->sha_type, $string);
     }
+
 
     protected function except($array, $keys)
     {
