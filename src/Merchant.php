@@ -66,7 +66,7 @@ class Merchant extends Config
         ], $params);
         if (!empty($params['amount']))
             $params['amount'] = $this->convertAmountFormat($params['amount']);
-        $signature = $this->signature($params,'request',true);
+        $signature = $this->signature($params, 'request', true);
         $params['signature'] = $signature;
         $validator = new Services();
         $validator = $validator->validator($params, 'apple_pay');
@@ -155,12 +155,12 @@ class Merchant extends Config
 
     public function request($data)
     {
-        return Http::post($this->getRoute()['url'], $data)->json();
+        return Http::connectTimeout(10)->post($this->getRoute()['url'], $data)->json();
     }
 
 
-    public function checkTransaction($data)
+    public function checkTransaction($data, $apple = false)
     {
-        $this->checkResponse($data);
+        $this->checkResponse($data, $apple);
     }
 }

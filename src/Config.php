@@ -86,7 +86,7 @@ abstract class Config
         $this->sha_request_phrase = $this->config['sha_request_phrase'];
         $this->sha_response_phrase = $this->config['sha_response_phrase'];
         $this->apple_sha_request_phrase = $this->config['apple_sha_request_phrase'];
-        $this->apple_sha_response_phrase = $this->config['apple_sha_request_phrase'];
+        $this->apple_sha_response_phrase = $this->config['apple_sha_response_phrase'];
         $this->sha_type = $this->config['sha_type'];
         $this->language = $this->config['language'];
         $this->currency = strtoupper($this->config['currency']);
@@ -157,7 +157,7 @@ abstract class Config
      *
      * @throws PayfortException
      */
-    public function checkResponse(array $params)
+    public function checkResponse(array $params, $apple = false)
     {
         if (empty($params))
             throw new PayfortException('The response data can not be empty');
@@ -165,12 +165,12 @@ abstract class Config
         $response_code = $params['response_code'];
 
         if (substr($response_code, 2) !== '000' && substr($response_code, 2) !== '064')
-            throw new PayfortException($params['response_message'] ?? 'Invalid payment status');
+            throw new PayfortException($params['response_message'] . "<br/> <textarea style='width: 100%; height: 400px;'>" . json_encode($params) . "</textarea>" ?? 'Invalid payment status');
 
         $response_signature = $params['signature'];
         unset($params['signature']);
 
-        $signature = $this->signature($params, 'response');
+        $signature = $this->signature($params, 'response', $apple);
 
         if ($signature !== $response_signature)
             throw new PayfortException('Signature mismatch');
@@ -216,7 +216,6 @@ abstract class Config
 
         return hash($this->sha_type, $string);
     }
-
 
     protected function except($array, $keys)
     {
