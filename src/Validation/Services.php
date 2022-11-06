@@ -50,6 +50,7 @@ class Services extends Config
             "remember_me" => ['required' => 0, 'in_array' => ['YES', 'NO']],
             "return_url"
         ];
+
         $this->services['apple_pay'] = [
             "command" => ['required' => 1, 'in_array' => $this->rules['commands']],
             "digital_wallet" => ['required' => 1, 'in_array' => $this->rules['digital_wallets']],
@@ -57,6 +58,9 @@ class Services extends Config
             "merchant_identifier" => ['required' => 1, 'maxlength' => 20],
             "merchant_reference" => ['required' => 1, 'maxlength' => 40],
             "amount" => ['required' => 1],
+            "customer_ip" => ['required' => 0],
+            "customer_name" => ['required' => 0],
+            "phone_number" => ['required' => 0],
             "customer_email",
             "apple_data" => ['required' => 1, 'maxlength' => 500],
             "apple_signature" => ['required' => 1, 'maxlength' => 3000],
@@ -102,7 +106,7 @@ class Services extends Config
             "query_command" => ['required' => 1, 'in_array' => $this->rules['query_commands']],
             "access_code" => ['required' => 1, 'maxlength' => 60],
             "merchant_identifier" => ['required' => 1, 'maxlength' => 20],
-            "merchant_reference" => ['required' => 1, 'maxlength' => 40],
+            "merchant_reference" => ['required' => 0, 'maxlength' => 40],
             "language" => ['required' => 1, 'maxlength' => 2],
             "signature" => ['required' => 1, 'maxlength' => 600],
             'fort_id' => ['required' => 1, 'maxlength' => 60],
