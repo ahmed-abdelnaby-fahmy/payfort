@@ -165,7 +165,7 @@ abstract class Config
         $response_code = $params['response_code'];
 
         if (substr($response_code, 2) !== '000' && substr($response_code, 2) !== '064')
-            throw new PayfortException($params['response_message'] . "<br/> <textarea style='width: 100%; height: 400px;'>" . json_encode($params) . "</textarea>" ?? 'Invalid payment status');
+            throw new PayfortException($params['response_message'] ?? 'Invalid payment status');
 
         $response_signature = $params['signature'];
         unset($params['signature']);
