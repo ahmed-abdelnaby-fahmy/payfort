@@ -23,7 +23,7 @@ class Validator
                 unset($parms[$key]);
                 array_push($parms, $key);
             } else {
-                if (empty($data[$parm]))
+                if (!isset($data[$parm]))
                     $this->setError('Missing  parameter ' . $parm);
             }
         }

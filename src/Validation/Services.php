@@ -48,6 +48,8 @@ class Services extends Config
             "card_holder_name" => ['required' => 0, 'maxlength' => 50],
             "token_name" => ['required' => 0, 'maxlength' => 160],
             "remember_me" => ['required' => 0, 'in_array' => ['YES', 'NO']],
+            'recurring_mode' => ['required' => 0],
+            'recurring_transactions_count' => ['required' => 0],
             "return_url"
         ];
 
@@ -101,6 +103,8 @@ class Services extends Config
             'merchant_extra3' => ['required' => 0],
             'merchant_extra4' => ['required' => 0],
             'merchant_extra5' => ['required' => 0],
+            'recurring_mode' => ['required' => 0],
+            'recurring_transactions_count' => ['required' => 0],
         ];
         $this->services['check_status'] = [
             "query_command" => ['required' => 1, 'in_array' => $this->rules['query_commands']],
@@ -117,10 +121,12 @@ class Services extends Config
             "access_code" => ['required' => 1, 'maxlength' => 60],
             "merchant_identifier" => ['required' => 1, 'maxlength' => 20],
             "signature" => ['required' => 1, 'maxlength' => 600],
+            "order_description" => ['required' => 0, 'maxlength' => 150],
             'amount',
             "currency" => ['required' => 1, 'maxlength' => 3],
             "language",
             'customer_email' => ['required' => 1],
+            'agreement_id' => ['required' => 0],
             'return_url',
             "merchant_reference" => ['required' => 1, 'maxlength' => 60],
             "token_name" => ['required' => 1, 'maxlength' => 160],

@@ -50,7 +50,7 @@ class Merchant extends Config
         $signature = $this->signature($params);
         $params['signature'] = $signature;
         $validator = new Services();
-        $validator = $validator->validator($params, 'authorization');
+        $validator = $validator->validator($params, 'payment');
         return $this->request($validator->data);
     }
 
@@ -140,7 +140,7 @@ class Merchant extends Config
     function redirect($data)
     {
         $html = '';
-        $html .= '<form action = "' . $this->getRoute()['redirectUrl'] . '" method = "post" name="frm" onload="document.frm.submit()"  >';
+        $html .= '<form action = "' . $this->getRoute()['redirectUrl'] . '" method = "post" name="frm"   >';
         foreach ($data as $a => $b) {
             $html .= '<input type = "hidden" name = "' . htmlentities($a) . '" value = "' . htmlentities($b) . '" >';
         }
