@@ -1,0 +1,39 @@
+{
+  "name": "aef/payfort",
+  "description": "Payfort payment gateway",
+  "require": {
+    "php": "^8.0",
+    "guzzlehttp/guzzle": "^7.0.1"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Payfort\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "ahmed abdelnaby",
+      "email": "ahmedabdelnabyfahmy1@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "scripts": {
+    "post-autoload-dump": [
+      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+      "@php artisan package:discover --ansi",
+      "@php artisan vendor:publish --tag={config}--force"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Payfort\\Providers\\PayfortServiceProvider"
+      ]
+    },
+    "aliases": {
+      "Payfort": "Payfort\\Facades\\Payfort"
+    },
+    "version": "1.0"
+  }
+}
