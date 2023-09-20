@@ -1,6 +1,6 @@
 {
   "name": "aef/payfort",
-  "description": "Payfort payment gateway",
+  "description": "laravel Payfort package",
   "require": {
     "php": "^8.0",
     "guzzlehttp/guzzle": "^7.0.1"
