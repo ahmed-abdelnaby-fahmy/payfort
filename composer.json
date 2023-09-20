@@ -1,6 +1,11 @@
 {
   "name": "aef/payfort",
   "description": "laravel Payfort package",
+  "keywords": [
+    "laravel payfort",
+    "payment",
+    "payfort"
+  ],
   "require": {
     "php": "^8.0",
     "guzzlehttp/guzzle": "^7.0.1"
