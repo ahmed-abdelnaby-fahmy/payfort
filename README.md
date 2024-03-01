@@ -1,5 +1,7 @@
 # Laravel Payfort
 
+The Laravel Payfort package simplifies the integration of Payfort payment services with Laravel applications. It provides a straightforward solution for incorporating Payfort into your Laravel projects, offering a range of features to streamline payment processes.
+
 ## Installation
 
 Using this package you can integrate laravel in a simple way with payfort.
