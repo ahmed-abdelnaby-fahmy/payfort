@@ -1,6 +1,6 @@
 {
   "name": "aef/payfort",
-  "description": "laravel Payfort package",
+  "description": "Laravel Payfort package provides a simple way to integrate Payfort payment services with Laravel applications. It offers features like payment redirection, support for installments, custom merchant page integration, Apple Pay support, and recurring transactions, simplifying the process of incorporating Payfort into Laravel",
   "keywords": [
     "laravel payfort",
     "payment",
