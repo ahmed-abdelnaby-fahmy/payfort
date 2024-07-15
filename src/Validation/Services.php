@@ -104,6 +104,8 @@ class Services extends Config
             'recurring_mode' => ['required' => 0],
             'recurring_transactions_count' => ['required' => 0],
             'agreement_id' => ['required' => 0],
+            'recurring_days_between_payments' => ['required' => 0],
+            'recurring_expiry_date' => ['required' => 0],
         ];
         $this->services['check_status'] = [
             "query_command" => ['required' => 1, 'in_array' => $this->rules['query_commands']],
